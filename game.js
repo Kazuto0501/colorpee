@@ -16,8 +16,8 @@ resize();
 
 const COLORS = ["#ff008c", "#00d9ff", "#ffe600", "#8a00ff"];
 
-// さらに引きで表示
-const VIEW_ZOOM = 0.78;
+// かなり引きで表示
+const VIEW_ZOOM = 0.70;
 
 let state = "ready";
 let score = 0;
@@ -172,8 +172,8 @@ function update() {
 }
 
 function getBarX(obs) {
-  // 移動域をかなり広げる
-  return W * 0.5 + Math.sin(obs.barPhase) * W * 0.50;
+  // 棒の可動域をかなり広くする
+  return W * 0.5 + Math.sin(obs.barPhase) * W * 0.72;
 }
 
 function getCrossCenter(obs) {
@@ -552,7 +552,7 @@ function drawStartText() {
   ctx.textAlign = "center";
 
   ctx.font = "68px Arial";
-  ctx.fillText("COLOPEE2", W / 2, H * 0.35);
+  ctx.fillText("COLOPEE3", W / 2, H * 0.35);
 
   ctx.font = "32px Arial";
   ctx.fillText("TAP TO START", W / 2, H * 0.50);
