@@ -18,7 +18,7 @@ const COLORS = ["#ff008c", "#00d9ff", "#ffe600", "#8a00ff"];
 
 let state = "ready";
 let score = 0;
-let bestScore = Number(localStorage.getItem("colorPassBest") || 0);
+let bestScore = Number(localStorage.getItem("coloroBest") || 0);
 
 let ball;
 let obstacles = [];
@@ -28,6 +28,10 @@ let gameOverColor = "#00d9ff";
 
 function randomColor() {
   return COLORS[Math.floor(Math.random() * COLORS.length)];
+}
+
+function randomDirection() {
+  return Math.random() < 0.5 ? -1 : 1;
 }
 
 function resetGame() {
@@ -73,14 +77,17 @@ function createObstacles() {
     let speed2 = -0.034;
     let barSpeed = 0.040;
 
+    if (type === "circle") {
+      speed = 0.026 * randomDirection();
+    }
+
     if (type === "doubleCircle") {
       speed = 0.024;
       speed2 = -0.036;
     }
 
-    // 十字はかなりゆっくり反時計回り
     if (type === "cross") {
-      speed = -0.012;
+      speed = -0.020;
     }
 
     obstacles.push({
@@ -165,7 +172,6 @@ function getBarX(obs) {
 
 function getCrossCenter(obs) {
   return {
-    // 十字の回転中心は左側
     x: W * 0.08,
     y: obs.y + 35
   };
@@ -173,8 +179,6 @@ function getCrossCenter(obs) {
 
 function getCrossArmLength(obs) {
   const center = getCrossCenter(obs);
-
-  // 棒の先端が中央の白い菱形あたりに来る長さ
   return W / 2 - center.x + 28;
 }
 
@@ -229,7 +233,7 @@ function checkBarCollision(obs) {
   const barY = obs.y;
   const barH = 18;
 
-  const segmentW = W * 0.20;
+  const segmentW = W * 0.25;
   const totalW = segmentW * 4;
   const barX = getBarX(obs);
   const startX = barX - totalW / 2;
@@ -351,7 +355,7 @@ function gameOver() {
 
   if (score > bestScore) {
     bestScore = score;
-    localStorage.setItem("colorPassBest", bestScore);
+    localStorage.setItem("coloroBest", bestScore);
   }
 
   scoreEl.style.display = "none";
@@ -420,33 +424,12 @@ function drawCircle(obs, radius, thickness, rotation) {
     ctx.lineCap = "butt";
     ctx.stroke();
   }
-
-  ctx.save();
-  ctx.translate(obs.x, obs.y);
-  ctx.rotate(rotation);
-  ctx.strokeStyle = "rgba(0,0,0,0.25)";
-  ctx.lineWidth = 1;
-
-  for (let i = 0; i < 72; i++) {
-    const a = ((Math.PI * 2) / 72) * i;
-    const x1 = Math.cos(a) * (radius - thickness / 2);
-    const y1 = Math.sin(a) * (radius - thickness / 2);
-    const x2 = Math.cos(a) * (radius + thickness / 2);
-    const y2 = Math.sin(a) * (radius + thickness / 2);
-
-    ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
-    ctx.stroke();
-  }
-
-  ctx.restore();
 }
 
 function drawBar(obs) {
   const barH = 18;
 
-  const segmentW = W * 0.20;
+  const segmentW = W * 0.25;
   const totalW = segmentW * 4;
   const barX = getBarX(obs);
   const startX = barX - totalW / 2;
@@ -471,8 +454,6 @@ function drawCross(obs) {
     ctx.rotate(i * Math.PI / 2);
 
     ctx.fillStyle = COLORS[i];
-
-    // 左側の中心から短めの棒が伸び、先端が中央の菱形あたりに来る
     ctx.fillRect(0, -thickness / 2, armLength, thickness);
 
     ctx.restore();
@@ -560,17 +541,14 @@ function drawStartText() {
   ctx.textAlign = "center";
 
   ctx.font = "72px Arial";
-  ctx.fillText("COLOR", W / 2, H * 0.30);
-
-  ctx.font = "72px Arial";
-  ctx.fillText("PASS", W / 2, H * 0.40);
+  ctx.fillText("COLORO", W / 2, H * 0.35);
 
   ctx.font = "34px Arial";
-  ctx.fillText("TAP TO JUMP", W / 2, H * 0.52);
+  ctx.fillText("TAP TO JUMP", W / 2, H * 0.50);
 
   ctx.font = "22px Arial";
   ctx.fillStyle = "rgba(255,255,255,0.75)";
-  ctx.fillText("PASS THROUGH MATCHING COLOR", W / 2, H * 0.59);
+  ctx.fillText("PASS THROUGH MATCHING COLOR", W / 2, H * 0.57);
 }
 
 function loop() {
