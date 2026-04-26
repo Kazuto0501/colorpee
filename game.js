@@ -16,8 +16,8 @@ resize();
 
 const COLORS = ["#ff008c", "#00d9ff", "#ffe600", "#8a00ff"];
 
-// 画面全体をかなり引きで表示する倍率
-const VIEW_ZOOM = 0.84;
+// さらに引きで表示
+const VIEW_ZOOM = 0.78;
 
 let state = "ready";
 let score = 0;
@@ -172,8 +172,8 @@ function update() {
 }
 
 function getBarX(obs) {
-  // 棒は長く、移動幅は少し抑える
-  return W * 0.5 + Math.sin(obs.barPhase) * W * 0.34;
+  // 移動域をかなり広げる
+  return W * 0.5 + Math.sin(obs.barPhase) * W * 0.50;
 }
 
 function getCrossCenter(obs) {
@@ -239,7 +239,6 @@ function checkBarCollision(obs) {
   const barY = obs.y;
   const barH = 18;
 
-  // 棒をかなり長くする。4色合計で画面幅の約1.84倍
   const segmentW = W * 0.46;
   const totalW = segmentW * 4;
   const barX = getBarX(obs);
@@ -374,7 +373,6 @@ function draw() {
 
   ctx.save();
 
-  // 画面全体をかなり引きで表示
   ctx.translate(W / 2, H / 2);
   ctx.scale(VIEW_ZOOM, VIEW_ZOOM);
   ctx.translate(-W / 2, -H / 2);
@@ -442,7 +440,6 @@ function drawCircle(obs, radius, thickness, rotation) {
 function drawBar(obs) {
   const barH = 18;
 
-  // 棒をかなり長くする。4色合計で画面幅の約1.84倍
   const segmentW = W * 0.46;
   const totalW = segmentW * 4;
   const barX = getBarX(obs);
@@ -555,7 +552,7 @@ function drawStartText() {
   ctx.textAlign = "center";
 
   ctx.font = "68px Arial";
-  ctx.fillText("COLOPEE1", W / 2, H * 0.35);
+  ctx.fillText("COLOPEE2", W / 2, H * 0.35);
 
   ctx.font = "32px Arial";
   ctx.fillText("TAP TO START", W / 2, H * 0.50);
