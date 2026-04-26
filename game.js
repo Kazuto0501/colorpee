@@ -552,7 +552,7 @@ function drawStartText() {
   ctx.textAlign = "center";
 
   ctx.font = "68px Arial";
-  ctx.fillText("COLOPEE", W / 2, H * 0.35);
+  ctx.fillText("COLOPO", W / 2, H * 0.35);
 
   ctx.font = "32px Arial";
   ctx.fillText("TAP TO START", W / 2, H * 0.50);
