@@ -678,7 +678,7 @@ function drawStartText() {
   ctx.textAlign = "center";
 
   ctx.font = "72px Arial";
-  ctx.fillText("COLOPO", W / 2, H * 0.35);
+  ctx.fillText("COLOPO1", W / 2, H * 0.35);
 
   ctx.font = "32px Arial";
   ctx.fillText("TAP TO START", W / 2, H * 0.50);
